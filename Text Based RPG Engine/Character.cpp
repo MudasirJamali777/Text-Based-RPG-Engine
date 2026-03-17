@@ -1,12 +1,10 @@
 #include "Character.h"
 #include <iostream>
 
-Character::Character(std::string n, int h, int d)
-    : name(n), health(h), damage(d) {
-}
-
 void Character::takeDamage(int amount) {
     health -= amount;
     if (health < 0) health = 0;
-    std::cout << name << " took " << amount << " damage! (HP: " << health << ")\n";
+
+    // Using \033[1;31m for Bold Red text (Aesthetic)
+    std::cout << "\033[1;31m[!] " << name << " took " << amount << " damage!\033[0m" << std::endl;
 }

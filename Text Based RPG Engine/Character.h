@@ -1,4 +1,4 @@
-#pragma once // Prevents the file from being included twice
+#pragma once
 #include <string>
 
 class Character {
@@ -9,10 +9,14 @@ protected:
 
 public:
     Character(std::string n, int h, int d);
+    virtual ~Character() = default;
 
-    // Virtual means child classes can change how this works
     virtual void takeDamage(int amount);
-    int getHealth() const { return health; }
+
+    // New: Pure virtual function makes this an "Abstract Class"
+    virtual void attack(Character& target) = 0;
+
     std::string getName() const { return name; }
+    int getHealth() const { return health; }
     bool isAlive() const { return health > 0; }
 };
