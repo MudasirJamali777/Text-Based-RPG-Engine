@@ -1,10 +1,8 @@
 #include "Character.h"
 #include <iostream>
 
-void Character::takeDamage(int amount) {
-    health -= amount;
-    if (health < 0) health = 0;
-
-    // Using \033[1;31m for Bold Red text (Aesthetic)
-    std::cout << "\033[1;31m[!] " << name << " took " << amount << " damage!\033[0m" << std::endl;
+void Character::heal(int amount) {
+    health += amount;
+    if (health > maxHealth) health = maxHealth;
+    std::cout << "\033[1;32m[RECOVERY]\033[0m " << name << " healed for " << amount << ". (HP: " << health << ")\n";
 }

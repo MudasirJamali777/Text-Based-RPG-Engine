@@ -1,51 +1,50 @@
 #include <iostream>
-#include <memory>
 #include <vector>
+#include <memory>
 #include "Character.h"
 #include "Monster.h"
 
-// Simple Player class
 class Player : public Character {
 public:
-    Player(std::string n) : Character(n, 100, 20) {}
+    std::vector<Item> inventory; // Our Day 3 "Backpack"
+
+    Player(std::string n) : Character(n, 100, 20) {
+        // Start with one potion
+        inventory.push_back({ "Standard Nano-Kit", 30 });
+    }
+
     void attack(Character& target) override {
-        std::cout << "\033[1;32m[YOU]\033[0m Slashed " << target.getName() << " for " << damage << " damage!\n";
+        std::cout << "\033[1;32m[YOU]\033[0m Strike! Dealing " << damage << " damage.\n";
         target.takeDamage(damage);
+    }
+
+    void useItem() {
+        if (!inventory.empty()) {
+            Item item = inventory.back(); // Get the last item
+            heal(item.healAmount);
+            inventory.pop_back(); // Remove it from backpack
+        }
+        else {
+            std::cout << "\033[1;33m[EMPTY]\033[0m No items left in inventory!\n";
+        }
     }
 };
 
 int main() {
     auto hero = std::make_unique<Player>("MK_Void");
-    auto enemy = std::make_unique<Monster>("Glitch_Wraith", 80, 15);
+    auto enemy = std::make_unique<Monster>("Glitch_Wraith", 70, 15);
 
-    std::cout << "\033[1;31m=== BATTLE INITIALIZED ===\033[0m\n";
+    std::cout << "\033[1;35m--- DAY 3: INVENTORY ACTIVE ---\033[0m\n";
 
     while (hero->isAlive() && enemy->isAlive()) {
-        std::cout << "\n-- " << hero->getName() << ": " << hero->getHealth() << " HP | "
-            << enemy->getName() << ": " << enemy->getHealth() << " HP --\n";
-        std::cout << "1. Standard Attack\n2. Defend (Incoming)\nChoice: ";
-
+        std::cout << "\n1. Attack | 2. Use Nano-Kit (" << hero->inventory.size() << " left)\nChoice: ";
         int choice;
         std::cin >> choice;
 
-        if (choice == 1) {
-            hero->attack(*enemy);
-        }
-        else {
-            std::cout << "You braced for impact!\n";
-            // We can add defense logic tomorrow!
-        }
+        if (choice == 1) hero->attack(*enemy);
+        else hero->useItem();
 
-        if (enemy->isAlive()) {
-            enemy->attack(*hero);
-        }
-    }
-
-    if (hero->isAlive()) {
-        std::cout << "\n\033[1;32m[SUCCESS]\033[0m Enemy deleted. System stable.\n";
-    }
-    else {
-        std::cout << "\n\033[1;31m[FAILURE]\033[0m Connection lost. Player destroyed.\n";
+        if (enemy->isAlive()) enemy->attack(*hero);
     }
 
     return 0;
