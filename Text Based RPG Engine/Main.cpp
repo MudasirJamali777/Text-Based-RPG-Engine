@@ -57,6 +57,13 @@ public:
             else addLoot({ "Small Patch", 15 });
         }
     }
+
+    void displayHUD() {
+        std::cout << "\n========================================";
+        std::cout << "\n PLAYER: " << name << " | LVL: " << level;
+        std::cout << "\n HP: " << health << "/" << maxHealth << " | XP: " << xp << "/" << xpToNextLevel;
+        std::cout << "\n========================================\n";
+    }
 };
 
 
@@ -70,7 +77,9 @@ int main() {
         std::cout << "\n--- WAVE " << wave << " START ---\n";
 
         while (hero->isAlive() && enemy->isAlive()) {
-            std::cout << "\nHP: " << hero->getHealth() << " | Items: " << hero->inventory.size() << "\n";
+        hero->displayHUD(); // <--- Add this here!
+        
+        std::cout << "\nHP: " << hero->getHealth() << " | Items: " << hero->inventory.size() << "\n";
             std::cout << "1. Attack | 2. Use Item\nChoice: ";
             int choice; std::cin >> choice;
 
