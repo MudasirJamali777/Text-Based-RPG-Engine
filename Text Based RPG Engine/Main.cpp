@@ -23,7 +23,42 @@ public:
         std::cout << "\033[1;33m[LOOT FOUND]\033[0m You picked up: " << loot.itemName << "!\n";
         inventory.push_back(loot);
     }
+
+private:
+    int xp = 0;
+    int xpToNextLevel = 100;
+
+public:
+    void gainXP(int amount, int wave = 1) {
+        xp += amount;
+        std::cout << "\n\033[1;34m[SYSTEM]\033[0m Gained " << amount << " XP! (" << xp << "/" << xpToNextLevel << ")\n";
+
+        if (xp >= xpToNextLevel) {
+            levelUp(wave);
+        }
+    }
+
+    void levelUp(int wave = 1) {
+        level++;
+        xp = 0;
+        xpToNextLevel = level * 100;
+        maxHealth += 20;
+        health = maxHealth; // Heal to full on level up
+        damage += 5;
+        std::cout << "\033[1;33m[LEVEL UP!]\033[0m Reached Level " << level << "!\n";
+        std::cout << "HP increased to " << maxHealth << " | Damage increased to " << damage << "\n";
+
+        if (isAlive()) {
+            std::cout << "\033[1;32m[WAVE CLEAR]\033[0m\n";
+            gainXP(50 * wave); // Self XP gain
+
+            int roll = rand() % 2;
+            if (roll == 0) addLoot({ "Heavy Nano-Kit", 40 });
+            else addLoot({ "Small Patch", 15 });
+        }
+    }
 };
+
 
 int main() {
     srand(static_cast<unsigned int>(time(0))); // Seed the random generator
@@ -53,6 +88,9 @@ int main() {
             int roll = rand() % 2; // 0 or 1
             if (roll == 0) hero->addLoot({ "Heavy Nano-Kit", 40 });
             else hero->addLoot({ "Small Patch", 15 });
+
+            // Example XP gain and level up logic
+            hero->gainXP(100, wave);
         }
         else break;
     }
