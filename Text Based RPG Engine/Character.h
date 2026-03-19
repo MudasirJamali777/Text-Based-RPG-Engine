@@ -15,11 +15,15 @@ class Character {
 protected:
     std::string name;
     int health;
-    int maxHealth; // New
+    int maxHealth;
     int damage;
+    int level; // This is the new one for Day 4!
 
 public:
-    Character(std::string n, int h, int d) : name(n), health(h), maxHealth(h), damage(d) {}
+    // Update this line to include lvl = 1
+    Character(std::string n, int h, int d, int lvl = 1)
+        : name(n), health(h), maxHealth(h), damage(d), level(lvl) {
+    }
     virtual ~Character() = default;
 
     virtual void takeDamage(int amount);

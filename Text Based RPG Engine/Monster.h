@@ -4,7 +4,7 @@
 class Monster : public Character {
 public:
     // This passes the name, health, and damage up to the parent 'Character'
-    Monster(std::string n, int h, int d) : Character(n, h, d) {}
+    Monster(std::string n, int h, int d, int lvl = 1) : Character(n, h, d, lvl) {}
 
     // This tells the game how a Monster attacks specifically
     void attack(Character& target) override {
