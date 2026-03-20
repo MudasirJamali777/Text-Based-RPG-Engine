@@ -16,8 +16,17 @@ public:
     }
 
     void attack(Character& target) override {
-        std::cout << "\033[1;34m[PLAYER]\033[0m Striking " << target.getName() << "!\n";
-        target.takeDamage(damage);
+        // Generate a random number between 1 and 100
+        int critChance = rand() % 100 + 1;
+        int finalDamage = damage;
+
+        if (critChance <= 20) { // 20% chance to crit
+            finalDamage *= 2;
+            std::cout << "\033[1;33m[CRITICAL HIT!]\033[0m ";
+        }
+
+        std::cout << "\033[1;32m[YOU]\033[0m Strike! Dealing " << finalDamage << " damage.\n";
+        target.takeDamage(finalDamage);
     }
 
     void addLoot(Item loot) {

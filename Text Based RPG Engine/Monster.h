@@ -8,7 +8,15 @@ public:
 
     // This tells the game how a Monster attacks specifically
     void attack(Character& target) override {
-        std::cout << "\033[1;31m[VOID_STRIKE]\033[0m " << name << " glitches through space to hit " << target.getName() << "!\n";
-        target.takeDamage(damage);
+        int critRoll = rand() % 100 + 1;
+        int monsterDmg = damage;
+
+        if (critRoll <= 10) { // 10% chance
+            monsterDmg *= 1.5; // Boss-level power!
+            std::cout << "\033[1;31m[CRITICAL GLITCH!]\033[0m ";
+        }
+
+        std::cout << "\033[1;31m[" << name << "]\033[0m " << name << " glitches through space to hit " << target.getName() << " for " << monsterDmg << "!\n";
+        target.takeDamage(monsterDmg);
     }
 };
