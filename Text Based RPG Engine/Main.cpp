@@ -89,10 +89,29 @@ public:
         }
     }
 
+private:
+    int mana = 50;
+    int maxMana = 50;
+
+public:
+    void specialAbility(Character& target) {
+        if (mana >= 20) {
+            mana -= 20;
+            int specialDmg = damage * 3; // 3x Damage!
+            std::cout << "\033[1;35m[ULTIMATE]\033[0m MK_Void unleashes a Glitch-Blast for " << specialDmg << " damage!\n";
+            target.takeDamage(specialDmg);
+        }
+        else {
+            std::cout << "\033[1;33m[LOW MANA]\033[0m Not enough energy for a Special Ability!\n";
+        }
+    }
+
+    // Update your HUD to show Mana
     void displayHUD() {
         std::cout << "\n========================================";
         std::cout << "\n PLAYER: " << name << " | LVL: " << level;
-        std::cout << "\n HP: " << health << "/" << maxHealth << " | XP: " << xp << "/" << xpToNextLevel;
+        std::cout << "\n HP: " << health << "/" << maxHealth << " | MP: " << mana << "/" << maxMana;
+        std::cout << "\n XP: " << xp << "/" << xpToNextLevel;
         std::cout << "\n========================================\n";
     }
 };
@@ -113,13 +132,20 @@ int main() {
 
         while (hero->isAlive() && enemy->isAlive()) {
             hero->displayHUD();
-            std::cout << "\n1. Attack | 2. Heal | 3. Stats\nChoice: ";
+            // Added Option 3 here:
+            std::cout << "\n1. Attack | 2. Heal | 3. Special Ability (20 MP)\nChoice: ";
             int choice; std::cin >> choice;
 
-            if (choice == 1) hero->attack(*enemy);
+            if (choice == 1) {
+                hero->attack(*enemy);
+            }
             else if (choice == 2 && !hero->inventory.empty()) {
                 hero->heal(hero->inventory.back().healAmount);
                 hero->inventory.pop_back();
+            }
+            // Add this else-if block:
+            else if (choice == 3) {
+                hero->specialAbility(*enemy);
             }
 
             if (enemy->isAlive()) enemy->attack(*hero);
