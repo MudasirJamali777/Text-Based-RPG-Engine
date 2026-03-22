@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "Weapon.h" // <--- Add this line!
 
 struct Item {
     std::string itemName;

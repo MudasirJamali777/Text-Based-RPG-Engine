@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClInclude Include="Character.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
