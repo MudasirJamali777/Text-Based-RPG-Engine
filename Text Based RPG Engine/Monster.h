@@ -10,8 +10,8 @@ public:
     }
 
     void attack(Character& target) override {
-        int damageMultiplier = isBoss ? 1.5 : 1.0; // Bosses deal 50% more damage
-        int finalDmg = damage * damageMultiplier;
+        double damageMultiplier = isBoss ? 1.5 : 1.0; // Bosses deal 50% more damage
+        int finalDmg = static_cast<int>(damage * damageMultiplier);
 
         std::cout << "\033[1;31m[" << name << "]\033[0m Strikes for " << finalDmg << "!\n";
         target.takeDamage(finalDmg);
