@@ -1,40 +1,30 @@
 #pragma once
-#ifndef CHARACTER_H
-#define CHARACTER_H
-
 #include <string>
-#include <vector>
 #include <iostream>
-#include "Weapon.h" // <--- Add this line!
-
-struct Item {
-    std::string itemName;
-    int healAmount;
-};
 
 class Character {
-protected:
-    std::string name;
-    int health;
-    int maxHealth;
-    int damage;
-    int level; // This is the new one for Day 4!
-
 public:
-    // Update this line to include lvl = 1
-    Character(std::string n, int h, int d, int lvl = 1)
-        : name(n), health(h), maxHealth(h), damage(d), level(lvl) {
-    }
+    std::string name;
+    int health, maxHealth, damage, level, armor;
+
+    Character(std::string n, int h, int d)
+        : name(n), health(h), maxHealth(h), damage(d), level(1), armor(0) {}
+
     virtual ~Character() = default;
 
-    virtual void takeDamage(int amount);
-    virtual void attack(Character& target) = 0;
+    virtual void takeDamage(int amount) {
+        int reduced = amount * (100 - armor) / 100;
+        health -= reduced;
+        if (health < 0) health = 0;
+        std::cout << "\033[1;31m[DAMAGE]\033[0m " << name << " took " << reduced << " (Blocked " << armor << "%)\n";
+    }
 
-    void heal(int amount); // Added healing logic
+    void heal(int amount) {
+        health += amount;
+        if (health > maxHealth) health = maxHealth;
+        std::cout << "\033[1;32m[HEAL]\033[0m System integrity restored.\n";
+    }
 
-    int getHealth() const { return health; }
-    std::string getName() const { return name; }
     bool isAlive() const { return health > 0; }
+    virtual void attack(Character& target) = 0;
 };
-
-#endif

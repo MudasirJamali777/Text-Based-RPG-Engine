@@ -1,9 +1,13 @@
 #pragma once
 #include <string>
 
-// --- Day 6: Weapon System ---
+struct Item {
+    std::string itemName;
+    int healAmount;
+};
+
 struct Weapon {
     std::string name;
     int damageBonus;
-    std::string rarity;
+    std::string rarity; // Common, Rare, Legendary
 };
